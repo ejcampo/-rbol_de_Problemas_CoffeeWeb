@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<!-- saved from url=(0063)file:///C:/Users/julia/Downloads/arbol_problemas_coffeeweb.html -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Árbol de Problemas – CoffeeWeb</title>
+<link href="./Árbol de Problemas – CoffeeWeb_files/css2" rel="stylesheet">
+<style>
+  :root {
+    --brown-dark: #2C1A0E;
+    --brown-mid: #5C3317;
+    --brown-warm: #8B4513;
+    --coffee: #6F4E37;
+    --caramel: #C68642;
+    --cream: #FDF6EC;
+    --sand: #F2E0C8;
+    --red-effect: #8B2020;
+    --red-cause: #1A3A2A;
+    --accent-gold: #D4A843;
+    --text-dark: #1A0F08;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text-dark);
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 10% 20%, rgba(111,78,55,0.07) 0%, transparent 50%),
+      radial-gradient(ellipse at 90% 80%, rgba(198,134,66,0.07) 0%, transparent 50%);
+  }
+
+  /* HEADER */
+  header {
+    background: var(--brown-dark);
+    padding: 28px 40px 22px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    border-bottom: 4px solid var(--accent-gold);
+  }
+  .header-icon {
+    font-size: 2.4rem;
+    filter: drop-shadow(0 2px 8px rgba(212,168,67,0.5));
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    color: var(--cream);
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  header p {
+    color: var(--accent-gold);
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .badge {
+    margin-left: auto;
+    background: var(--accent-gold);
+    color: var(--brown-dark);
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 5px 14px;
+    border-radius: 20px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  /* LAYOUT */
+  .canvas {
+    padding: 40px 30px 60px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* SECTION LABELS */
+  .section-label {
+    text-align: center;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 6px 20px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 18px;
+  }
+  .label-effects { background: rgba(139,32,32,0.12); color: var(--red-effect); }
+  .label-problem { background: rgba(111,78,55,0.15); color: var(--brown-warm); }
+  .label-causes  { background: rgba(26,58,42,0.12); color: var(--red-cause); }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 12px;
+  }
+
+  /* CONNECTOR LINES */
+  .connector-v {
+    width: 2px;
+    background: linear-gradient(to bottom, var(--caramel), var(--coffee));
+    margin: 0 auto;
+    position: relative;
+  }
+  .connector-v::after {
+    content: '';
+    position: absolute;
+    bottom: -7px; left: 50%;
+    transform: translateX(-50%);
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 8px solid var(--coffee);
+  }
+
+  /* ROOT PROBLEM */
+  .root-problem {
+    background: linear-gradient(135deg, var(--brown-mid) 0%, var(--brown-dark) 100%);
+    color: var(--cream);
+    border-radius: 12px;
+    padding: 22px 36px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 8px 32px rgba(44,26,14,0.35), inset 0 1px 0 rgba(255,255,255,0.1);
+    border: 2px solid var(--accent-gold);
+    max-width: 620px;
+    margin: 0 auto;
+  }
+  .root-problem .emoji { font-size: 1.8rem; display:block; margin-bottom: 8px; }
+  .root-problem h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 6px;
+    color: var(--sand);
+  }
+  .root-problem p {
+    font-size: 0.8rem;
+    color: rgba(253,246,236,0.7);
+    font-weight: 300;
+  }
+  .trunk-top, .trunk-bottom {
+    height: 36px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--caramel), var(--coffee));
+    margin: 0 auto;
+  }
+
+  /* CARDS ROW */
+  .row {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+  }
+
+  /* HORIZONTAL BAR */
+  .h-bar {
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--caramel), transparent);
+    margin: 0 auto 0;
+    width: 80%;
+    max-width: 800px;
+    position: relative;
+  }
+
+  /* BRANCH CONNECTORS */
+  .branch-area {
+    position: relative;
+    margin-bottom: 4px;
+  }
+
+  /* EFFECT CARDS */
+  .effect-card {
+    background: linear-gradient(145deg, #fff8f0, #fbeee0);
+    border: 2px solid var(--red-effect);
+    border-top: 5px solid var(--red-effect);
+    border-radius: 10px;
+    padding: 14px 16px;
+    flex: 1;
+    min-width: 160px;
+    max-width: 210px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 3px 12px rgba(139,32,32,0.12);
+    transition: transform 0.2s;
+  }
+  .effect-card:hover { transform: translateY(-3px); }
+  .effect-card .eicon { font-size: 1.4rem; margin-bottom: 6px; display: block; }
+  .effect-card h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--red-effect);
+    margin-bottom: 5px;
+    line-height: 1.3;
+  }
+  .effect-card p { font-size: 0.72rem; color: #555; line-height: 1.4; font-weight: 400; }
+
+  /* CAUSE CARDS */
+  .cause-card {
+    background: linear-gradient(145deg, #f0f7f0, #e4f0e4);
+    border: 2px solid var(--red-cause);
+    border-bottom: 5px solid var(--red-cause);
+    border-radius: 10px;
+    padding: 14px 16px;
+    flex: 1;
+    min-width: 160px;
+    max-width: 210px;
+    text-align: center;
+    box-shadow: 0 3px 12px rgba(26,58,42,0.12);
+    transition: transform 0.2s;
+  }
+  .cause-card:hover { transform: translateY(3px); }
+  .cause-card .cicon { font-size: 1.4rem; margin-bottom: 6px; display: block; }
+  .cause-card h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--red-cause);
+    margin-bottom: 5px;
+    line-height: 1.3;
+  }
+  .cause-card p { font-size: 0.72rem; color: #444; line-height: 1.4; font-weight: 400; }
+
+  /* SUB-CAUSES */
+  .sub-causes-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 14px;
+  }
+  .sub-card {
+    background: #ffffff;
+    border: 1.5px solid rgba(26,58,42,0.4);
+    border-radius: 8px;
+    padding: 10px 12px;
+    min-width: 130px;
+    max-width: 170px;
+    flex: 1;
+    text-align: center;
+  }
+  .sub-card .si { font-size: 1.1rem; margin-bottom: 4px; display: block; }
+  .sub-card p {
+    font-size: 0.69rem;
+    color: #333;
+    line-height: 1.35;
+    font-weight: 500;
+  }
+
+  /* DIVIDERS */
+  .spacer { height: 10px; }
+  .spacer-sm { height: 6px; }
+
+  /* LEGEND */
+  .legend {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    margin-top: 40px;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #555;
+  }
+  .legend-dot {
+    width: 12px; height: 12px;
+    border-radius: 3px;
+  }
+
+  /* ARROWS */
+  .arrow-up { color: var(--red-effect); font-size: 1.4rem; text-align:center; line-height: 1; }
+  .arrow-down { color: var(--red-cause); font-size: 1.4rem; text-align:center; line-height: 1; }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 16px;
+    font-size: 0.7rem;
+    color: #999;
+    border-top: 1px solid var(--sand);
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-icon">☕</div>
+  <div>
+    <h1>Árbol de Problemas — CoffeeWeb</h1>
+    <p>Anteproyecto de grado · Ingeniería de Sistemas · FUP · 2026</p>
+  </div>
+  <div class="badge">Vereda Villa Hermosa · Cajibío, Cauca</div>
+</header>
+
+<div class="canvas">
+
+  <!-- EFECTOS -->
+  <div class="section-header">
+    <span class="section-label label-effects">⬆ Efectos</span>
+  </div>
+
+  <div class="row">
+    <div class="effect-card">
+      <span class="eicon">📉</span>
+      <h4>Baja productividad y calidad del café</h4>
+      <p>Reducción de rendimientos por manejo inadecuado del suelo</p>
+    </div>
+    <div class="effect-card">
+      <span class="eicon">🚫</span>
+      <h4>Exclusión de mercados especializados</h4>
+      <p>Sin certificación orgánica ni acceso a mercados de alto valor</p>
+    </div>
+    <div class="effect-card">
+      <span class="eicon">💸</span>
+      <h4>Pérdidas económicas para los caficultores</h4>
+      <p>Ingresos reducidos por precios bajos y costos de manejo ineficiente</p>
+    </div>
+    <div class="effect-card">
+      <span class="eicon">🌱</span>
+      <h4>Deterioro ambiental del suelo</h4>
+      <p>Degradación progresiva de la fertilidad y ecosistema agrícola</p>
+    </div>
+  </div>
+
+  <div class="spacer"></div>
+  <div style="text-align:center; color:var(--caramel); font-size:1.6rem; line-height:1;">▲</div>
+  <div class="trunk-top" style="height:30px;"></div>
+
+  <!-- PROBLEMA CENTRAL -->
+  <div class="section-header">
+    <span class="section-label label-problem">⬤ Problema Central</span>
+  </div>
+
+  <div class="root-problem">
+    <span class="emoji">🔍</span>
+    <h2>Los caficultores de Villa Hermosa carecen de herramientas tecnológicas accesibles para evaluar la aptitud de sus terrenos en el cultivo de café orgánico</h2>
+    <p>Cajibío, Cauca — Vereda Villa Hermosa</p>
+  </div>
+
+  <div class="trunk-bottom" style="height:30px;"></div>
+  <div style="text-align:center; color:var(--coffee); font-size:1.6rem; line-height:1;">▼</div>
+  <div class="spacer"></div>
+
+  <!-- CAUSAS DIRECTAS -->
+  <div class="section-header">
+    <span class="section-label label-causes">⬇ Causas Directas</span>
+  </div>
+
+  <div class="row">
+    <div class="cause-card">
+      <span class="cicon">🧪</span>
+      <h4>Ausencia de análisis sistemáticos del suelo</h4>
+      <p>Sin medición de pH, N, P, K ni materia orgánica a nivel de parcela</p>
+    </div>
+    <div class="cause-card">
+      <span class="cicon">💻</span>
+      <h4>Inexistencia de plataformas web adaptadas</h4>
+      <p>No hay sistemas accesibles que integren datos edafoclimáticos para café orgánico</p>
+    </div>
+    <div class="cause-card">
+      <span class="cicon">🤝</span>
+      <h4>Limitado acceso a asistencia técnica agronómica</h4>
+      <p>60% de caficultores sin acceso regular a asesoría especializada</p>
+    </div>
+    <div class="cause-card">
+      <span class="cicon">📋</span>
+      <h4>Falta de trazabilidad de prácticas agrícolas</h4>
+      <p>Sin registro documental que respalde procesos de certificación orgánica</p>
+    </div>
+  </div>
+
+  <div class="spacer"></div>
+
+  <!-- CAUSAS RAÍZ -->
+  <div class="section-header" style="margin-top:18px;">
+    <span class="section-label label-causes" style="opacity:0.75;">⬇ Causas Raíz</span>
+  </div>
+
+  <div class="sub-causes-row">
+    <div class="sub-card">
+      <span class="si">🏔️</span>
+      <p>Zona rural con conectividad y recursos tecnológicos limitados</p>
+    </div>
+    <div class="sub-card">
+      <span class="si">💰</span>
+      <p>Altos costos de laboratorio y asesorías agronómicas convencionales</p>
+    </div>
+    <div class="sub-card">
+      <span class="si">📚</span>
+      <p>Bajo nivel de alfabetización digital de productores (67% educación primaria o secundaria incompleta)</p>
+    </div>
+    <div class="sub-card">
+      <span class="si">🛰️</span>
+      <p>Herramientas existentes (SIG, SoilGrids) diseñadas para escala regional, no para fincas individuales</p>
+    </div>
+    <div class="sub-card">
+      <span class="si">📡</span>
+      <p>Escasa investigación sobre requerimientos edáficos específicos del café orgánico en la región caucana</p>
+    </div>
+  </div>
+
+  <!-- LEYENDA -->
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--red-effect);"></div> Efectos del problema</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--brown-mid);"></div> Problema central</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--red-cause);"></div> Causas directas</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#ccc; border:1px solid #aaa;"></div> Causas raíz</div>
+  </div>
+
+</div>
+
+<footer>
+  CoffeeWeb · Fundación Universitaria de Popayán · Facultad de Ingeniería · Programa de Ingeniería de Sistemas · 2026
+</footer>
+
+
+
+</body></html>
